@@ -1,0 +1,14 @@
+@(signinform : Form[Company])
+@import helper._
+
+@main("Sign in"){
+	
+	@form(routes.Application.savecompany){
+		@inputText(signinform("Company Id"),'placeholder -> "IFS")
+		@inputText(signinform("Name"))
+		@inputPassword(signinform("Password"))
+		@inputText(signinform("Description"))
+		<input type="submit" value="Submint">
+	}
+
+}

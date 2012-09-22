@@ -1,0 +1,27 @@
+@(costfuncs : List[Costfunction], costfuncForm : Form[Costfunction])
+@import helper._
+
+@main("Part Cost functions"){
+
+	@form(routes.Application.costfuncadd){
+		@inputText(costfuncForm("Company ID"))
+		@inputText(costfuncForm("Part ID"))
+		@inputText(costfuncForm("Function ID"))
+		@inputText(costfuncForm("Function"))
+		<input type="submit" value="add function">
+	}
+	<table>
+	@costfuncs.map{costfunc =>
+	<tr>
+		<td> @costfunc.funcid</td>
+		<td> @costfunc.functxt</td>
+		<td><a href ="@routes.Application.costfuncdelete(costfunc.partid,costfunc.funcid)">Delete</a></td>
+	</tr>
+		
+		
+	}
+	</table>
+<a href="/">Home</a>
+<a href="@routes.Application.part">Part</a>
+
+}

@@ -1,0 +1,46 @@
+@(parts:List[Part], partForm:Form[Part])
+@import helper._
+
+@main("Manage your Part or Materials") {
+    
+    <h2> You are at Products and Parts page</h2> 
+    <p/>
+    <h3>Add new parts</h3>
+    
+    @form(routes.Application.partadd){
+        @inputText(partForm("CompId"))
+		@inputText(partForm("PartId"))    
+    	@inputText(partForm("Part name")) 	
+    	@inputText(partForm("Lead time"))
+    	<input type="submit" value="Add Part">
+    }
+    
+    <h3>Products and  parts</h3>
+    <table>
+    @parts.map{ part =>
+    <tr>
+     <td>@part.compid</td>
+     <td>@part.partid</td>
+     <td>@part.partname</td>
+     <td>@part.leadtime</td>
+     <td>@form(routes.Application.partdelete(part.partid)){
+    				<input type="submit" value="Delete"/>
+    			}
+     </td>
+     <td>@form(routes.Application.bom(part.partid)){
+     			<input type="submit" value="Sub Parts"/>
+     	}
+     
+     </td>
+     <td>
+     	@form(routes.Application.costfunc(part.partid)){
+     		<input type="submit" value="Cost functions"/>
+        }
+     </td>
+    </tr>
+    }
+    </table>
+    
+     <a href="/">Home</a>
+    
+}
