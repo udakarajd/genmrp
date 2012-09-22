@@ -1,0 +1,29 @@
+@(partid:String,boms:List[Bom],bomForm :Form[Bom])
+@import helper._
+
+@main("Bom child parts"){
+	<h1> The bom child parts </h1>
+	<h2>Add child part</h2>
+	@form(routes.Application.bomadd){
+		@inputText(bomForm("Company ID"))
+		@inputText(bomForm("Part ID"))
+		@inputText(bomForm("Child Part"))
+		@inputText(bomForm("Quantity"))
+		<input type="submit" value="Add Child">
+		
+	}
+	<table>
+	<tr> <td>Child part Id</td><td>Quantity</td></tr>
+	
+	@boms.map{bom =>
+		<tr>
+			<td>@bom.childpartid</td>
+			<td>@bom.quantity</td>
+			<td> <a href="@routes.Application.bomdelete(bom.partid,bom.childpartid)">Delete</a>
+			</td>
+		</tr>
+	}
+	</table>
+<a href="/">Home</a> <p>
+<a href="@routes.Application.part">Part</a>
+}

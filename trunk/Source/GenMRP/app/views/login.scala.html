@@ -1,0 +1,16 @@
+@(loginForm:Form[LoginInfo])
+@import helper._
+
+@main("Login") {
+    
+    <h1>Login</h1>
+    
+    @form(routes.Application.loginvalidate){
+    	@inputText(loginForm("Company Id"))
+    	@inputPassword(loginForm("Password"))    	
+        
+    	<input type="submit" value="Login">
+    }
+    <a href="/signin">Sign in</a>
+    
+}
