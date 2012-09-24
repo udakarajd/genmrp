@@ -20,11 +20,13 @@ CREATE TABLE part (
   FOREIGN KEY (compid) REFERENCES company(compid) 
 );
 
+alter table part add onhand int DEFAULT 0 after leadtime;
+
 CREATE TABLE ordersnapshot(
 	compid varchar(40) NOT NULL,
 	partid varchar(40) NOT NULL,
-	orderid varchar(40) NOT NULL,
-	scheduleid varchar(40) NOT NULL, 
+	orderid int NOT NULL,
+	scheduleid int NOT NULL,
 	days int,
 	quantity int,
 	CONSTRAINT pk_orderid PRIMARY KEY (orderid,scheduleid),
@@ -33,6 +35,28 @@ CREATE TABLE ordersnapshot(
 	
 );
 
+
+alter table ordersnapshot add pordays int after quantity;
+alter table ordersnapshot add porquantity int after pordays;
+
+create view orders as
+select compid,partid,orderid,scheduleid,days,quantity
+from ordersnapshot order by days;
+
+
+-- Create por is not a good idea. 
+/*
+CREATE TABLE  por(
+	compid varchar(40) NOT NULL,
+	partid varchar(40) NOT NULL,
+	orderid int NOT NULL,
+	scheduleid int NOT NULL,
+	days int,
+	quantity int,
+	FOREIGN KEY(partid) REFERENCES part(partid),
+    	FOREIGN KEY(compid) REFERENCES company(compid)	
+)
+*/
 CREATE TABLE bom(
 	compid varchar(40) NOT NULL,
 	partid varchar(40) NOT NULL,
@@ -52,8 +76,9 @@ CREATE TABLE costfunction(
 	partid varchar(40) NOT NULL,
 	funcid  varchar(40) NOT NULL,
 	functxt varchar(400) NOT NULL, 
+	PRIMARY KEY(funcid),
 	FOREIGN KEY(partid) REFERENCES part(partid),
-    FOREIGN KEY(compid) REFERENCES part(compid)
+        FOREIGN KEY(compid) REFERENCES part(compid)
 	
 );
 
