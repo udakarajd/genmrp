@@ -1,11 +1,18 @@
 @(message: String)
 
-@main("Welcome to Play 2.0") {
+@main("Welcome GenMRP Home") {
     
-   <H1>You are logged in with @message</H1>
+   <h1>GenMRP Home </h1> 
+   <H3>You are logged in with @message</H3>
+   <h2> please proceed with you configurations.</h2>
+   <ul>
+	  <li> <a href="part">Parts</a> </li>
+	  <li> <a href="@routes.Application.order"> Order Snapshots </a> </li>
+	  <li> <a href="logout">Logout</a> </li>	  
+   </ul>
+
    
-   <a href="part">Parts</a>
-   <a href="logout">Logout</a>
-   <a href="@routes.Application.order"> Order Snapshots </a>
+  
+  
     
 }

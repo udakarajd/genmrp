@@ -14,7 +14,10 @@ object Bom{
          'partid -> partid
        ).as(bom *)
        )
-    
+       
+  def getCompanyBom(companyid:String):List[Bom] = DB.withConnection(implicit c =>
+  	SQL("select * from bom where compid ={companyid}").on('companyid -> companyid).as(bom *)
+  )
   
   def add(bom : Bom) = {
     DB.withConnection(implicit c =>
