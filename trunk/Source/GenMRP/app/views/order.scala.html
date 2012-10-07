@@ -15,10 +15,16 @@
 	<input type="submit" value="Order"/>	
 	}
    
-   <table>
-   	<th>
-   		<td>Company Id</td><td>Part id</td><td>Order id</td><td>Schedule id</td><td>days</td><td>Quantity</td>
-   	</th>
+   <table border="1">
+   	<tr>
+   		<th>Company Id</th>
+   		<th>Part id</th>
+   		<th>Order id</th>
+   		<th>Schedule id</th>
+   		<th>In how many days</th>
+   		<th>Quantity</th>
+   		<th></th>
+   	</tr>
    @orders.map{order =>
     <tr>
     	<td>@order.compid</td>
@@ -32,5 +38,10 @@
     		
    }
    </table>
+   <a href="@routes.Application.genpor">Generate Purchase Order Release</a>
+   <br/>
+   
+   <a href="/">Home</a> ,
+   <a href="@routes.Application.part">parts</a>
 
 }

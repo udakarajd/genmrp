@@ -12,17 +12,32 @@
 		@inputText(partForm("PartId"))    
     	@inputText(partForm("Part name")) 	
     	@inputText(partForm("Lead time"))
+    	@inputText(partForm("On Hand"))
+    	
     	<input type="submit" value="Add Part">
     }
     
     <h3>Products and  parts</h3>
-    <table>
+    <table border="1">
+    <tr>
+    	<th>Company</th>
+    	<th>Part Id</th>
+    	<th>Part Name</th>
+    	<th>Lead time(days)</th>
+    	<th>On hand </th>
+    	<th></th>
+    	<th></th>
+    	<th></th>
+    	<th></th>
+    	
+    </tr>
     @parts.map{ part =>
     <tr>
      <td>@part.compid</td>
      <td>@part.partid</td>
      <td>@part.partname</td>
      <td>@part.leadtime</td>
+     <td>@part.onhand</td>
      <td>@form(routes.Application.partdelete(part.partid)){
     				<input type="submit" value="Delete"/>
     			}
@@ -36,6 +51,11 @@
      	@form(routes.Application.costfunc(part.partid)){
      		<input type="submit" value="Cost functions"/>
         }
+     </td>
+     <td>
+     	@form(routes.Application.orderpart(part.partid)){
+     		<input type="submit" value="Order"/>
+     	}
      </td>
     </tr>
     }

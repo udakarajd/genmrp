@@ -1,0 +1,73 @@
+@(message:String,orders:List[Order],por:List[Order])
+@import helper._
+
+@main("Planed order Release"){
+
+ <h1>Material requirment plan</h1>
+ 
+ @message 
+ 
+<table>
+<tr>
+<td>Orders
+
+<table>
+   	<tr>
+   		<th>Part id</th>
+   		<th>Order id</th>
+   		<th>Schedule id</th>
+   		<th>days</th>
+   		<th>Quantity</th>
+   	</tr>
+   @orders.map{order =>
+    <tr>
+    	
+    	<td>@order.partid</td>
+    	<td>@order.orderid</td>
+    	<td>@order.scheduleid</td>
+    	<td>@order.days</td>
+    	<td>@order.quantity</td>
+    	
+    </tr>
+    		
+   }
+ </table>
+
+</td>
+<td>POR 
+
+<table>
+   	<th>
+   		<tr>
+   		<th>Part id</th>
+   		<th>Order id</th>
+   		<th>Schedule id</th>
+   		<th>days</th>
+   		<th>Quantity</th>
+   	</tr>
+   	</th>
+   @por.map{order =>
+    <tr>
+    	
+    	<td>@order.partid</td>
+    	<td>@order.orderid</td>
+    	<td>@order.scheduleid</td>
+    	<td>@order.days</td>
+    	<td>@order.quantity</td>    	
+    </tr>
+    		
+   }
+ </table>
+
+</td>
+</tr>
+</table>
+
+
+ <a href="/">Home</a>
+ <a href="@routes.Application.order">parts</a>
+
+
+
+
+}
