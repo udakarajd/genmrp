@@ -15,6 +15,12 @@ import play.api.data.Forms._
 import play.api.libs.openid.Errors
 import views.html.defaultpages.unauthorized
 
+import play.api.libs.concurrent.Akka
+import play.api.libs.concurrent.Promise
+import play.api.Play.current
+
+
+
 object Application extends Controller {
   
   //------------ 1.Actions--------------------
@@ -71,7 +77,7 @@ object Application extends Controller {
   
   def part = Action{implicit request =>
     request.session.get("companyid").map{ compid =>
-      Ok(views.html.part(Part.all(),partForm.fill(Part(compid,"","",0))))
+      Ok(views.html.part(Part.allCompanyParts(compid),partForm.fill(Part(compid,"","",0,0))))
     }.getOrElse{
       Redirect(routes.Application.login)
     }
@@ -92,8 +98,8 @@ object Application extends Controller {
   
   def partdelete(partid:String) = Action{ implicit request =>
     request.session.get("companyid").map{companyid => 
-      Part.remove(Part(companyid,partid,"",0))
-      Ok(views.html.part(Part.all(),partForm.fill(Part(companyid,"","",0))))
+      Part.remove(Part(companyid,partid,"",0,0))
+      Ok(views.html.part(Part.allCompanyParts(companyid),partForm.fill(Part(companyid,"","",0,0))))
       }.getOrElse{
          Redirect(routes.Application.login)
       }
@@ -150,6 +156,7 @@ object Application extends Controller {
     		
     )
   }
+  
   def costfuncdelete(partid : String , funcid : String) = Action{ implicit request => 
     request.session.get("companyid").map{companyid =>
       	Costfunction.deletefucn(Costfunction(companyid,partid,funcid,""))
@@ -164,11 +171,19 @@ object Application extends Controller {
   
   def order = Action{ implicit request =>
     request.session.get("companyid").map{compid =>
-    	Ok(views.html.order(Order.company_order_snapshot(compid), orderForm))	
+    	Ok(views.html.order(Order.company_order_snapshot(compid), orderForm.fill(Order(compid,"",Order.next_order_id,10,0,0))))	
     }.getOrElse{
        Redirect(routes.Application.login)
     }
   } 
+  
+  def orderpart(partid: String) = Action{implicit request =>
+    	request.session.get("companyid").map{compid =>
+    	Ok(views.html.order(Order.company_order_snapshot(compid), orderForm.fill(Order(compid,partid,Order.next_order_id,10,0,0))))	
+    	}.getOrElse{
+    		Redirect(routes.Application.login)
+    	}
+  }
   def ordernew = Action{implicit request =>
   	orderForm.bindFromRequest.fold(
   	  error => BadRequest(views.html.order(Order.company_order_snapshot(""),error)),
@@ -178,6 +193,7 @@ object Application extends Controller {
   	  }
   	)
   }
+  
   def orderremove(orderid:Int) = Action {implicit request => 
      request.session.get("companyid").map{compid =>       
         Order.delete_order(Order("","",orderid,0,0,0))
@@ -190,6 +206,36 @@ object Application extends Controller {
     
   }
   
+ def genpor = Action{implicit request =>
+    request.session.get("companyid").map{compid =>      
+     var messagepromis: Promise[String] = Akka.future{  Order.gen_por(compid) }
+     Async{
+       messagepromis.map(message =>           
+    		   Ok(views.html.por(message,(Order.company_order_snapshot(compid) ++ Order.getNewOrderList).sortWith(_.days > _.days),(Order.getPorList).sortWith(_.days > _.days)))
+       ) 
+       
+     } 
+     
+    }.getOrElse{
+       Redirect(routes.Application.login)
+    }
+    
+  }
+
+/*
+  def genpor = Action{implicit request =>
+    request.session.get("companyid").map{compid =>
+      
+     var message=  Order.gen_por(compid)
+     
+     Ok(views.html.por(message,(Order.company_order_snapshot(compid) ++ Order.getNewOrderList).sortWith(_.days > _.days),(Order.getPorList).sortWith(_.days > _.days)))
+     
+    }.getOrElse{
+       Redirect(routes.Application.login)
+    }
+    
+  }
+ */
   //------------------ Form mappings -----------------------
   val loginForm = Form(
       mapping (
@@ -213,7 +259,8 @@ object Application extends Controller {
       "CompId" -> nonEmptyText,
       "PartId" -> nonEmptyText,
       "Part name" -> nonEmptyText,
-      "Lead time" -> number
+      "Lead time" -> number,
+      "On Hand"-> number
       )(Part.apply)(Part.unapply)
     )
     
@@ -245,8 +292,7 @@ object Application extends Controller {
 				  "Days" 		-> number,
 				  "Quantity" 	-> number		      
 		      )(models.Order.apply)(models.Order.unapply)
-  )
-  
+  )  
     
     
 }
