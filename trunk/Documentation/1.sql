@@ -76,7 +76,7 @@ CREATE TABLE costfunction(
 	partid varchar(40) NOT NULL,
 	funcid  varchar(40) NOT NULL,
 	functxt varchar(400) NOT NULL, 
-	PRIMARY KEY(funcid),
+	CONSTRAINT funckey PRIMARY KEY(compid,partid,funcid),
 	FOREIGN KEY(partid) REFERENCES part(partid),
         FOREIGN KEY(compid) REFERENCES part(compid)
 	
