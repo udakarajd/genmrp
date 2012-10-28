@@ -17,6 +17,14 @@ object Costfunction{
 		   ).as(costfunction *)
 		 )
   }
+  def all_company_parts(compid : String): List[Costfunction] = {
+    DB.withConnection(implicit c => 
+		   SQL("select * from costfunction where compid={compid}").on(
+		       'compid -> compid
+		   ).as(costfunction *)
+		 )     
+  }
+  
   def deletefucn(costfunc : Costfunction) ={
     DB.withConnection(implicit c =>
       SQL("delete from costfunction where compid={compid} and partid={partid} and funcid={funcid}").on(

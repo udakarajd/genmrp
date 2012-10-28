@@ -211,7 +211,7 @@ object Application extends Controller {
      var messagepromis: Promise[String] = Akka.future{  Order.gen_por(compid) }
      Async{
        messagepromis.map(message =>           
-    		   Ok(views.html.por(message,(Order.company_order_snapshot(compid) ++ Order.getNewOrderList).sortWith(_.days > _.days),(Order.getPorList).sortWith(_.days > _.days)))
+    		   Ok(views.html.por(message,(Order.getNewOrderList).sortWith(_.days > _.days),(Order.getPorList).sortWith(_.days > _.days)))
        ) 
        
      } 
