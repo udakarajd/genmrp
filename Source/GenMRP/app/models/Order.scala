@@ -8,6 +8,7 @@ import anorm.SqlParser._
 import scala.collection.mutable.Stack
 
 import mrp.Soln
+import gen.Solpool
 
 case class Order(compid:String,partid:String,orderid:Int ,scheduleid:Int,days:Int, quantity:Int)
 
@@ -108,16 +109,16 @@ object Order{
 	      orderinfo += "- Validate Success "
 	      println("Valid Solution -")
 	      soln.portlist.foreach(order => print(order.quantity+" "))
-	      println()
+	      println() 
 	      println("Random solution")
 	      //var randsol =  Soln.generate_random_sol(soln)
-	     // var randsol = Soln.generate_poolof_random_sol(10,soln)
-	      var randsol = Soln.generate_poolof_valid_random_sol(400,soln)
+	      //var randsol = Solpool.generate_poolof_random_sol(10,soln)
+	      var randsol = Solpool.generate_poolof_valid_random_sol(30,soln)
 	      println("Rand Solution length" + randsol.length)
 	      var funclist = Costfunction.all_company_parts(compid)
 	      randsol.foreach(solx => {
 	      		solx.portlist.foreach(orderc =>// print(orderc.partid+"-"+orderc.days+"-"+ orderc.quantity + " "))
-	      		Soln.calc_fitness_value_per_sol(solx,funclist)
+	      		Solpool.calc_fitness_value_per_sol(solx,funclist)
 	      		//	print("---"+solx.fitness)
 	      		//println()
 	      		)
@@ -125,6 +126,19 @@ object Order{
 	      )
 	     randsol = randsol.sortWith( _.fitness < _.fitness) 
 	     randsol.foreach(solx => {
+	       solx.portlist.foreach(orderc => print(orderc.partid+"-"+orderc.days+"-"+ orderc.quantity + " "))
+	       print("---"+solx.fitness)
+	       println()
+	     })
+	     println("-------- Now we create crossover pool---------")
+	     var solpool = Solpool(randsol)
+	     //Solpool.gen_crossover_pop(soln,solpool,funclist)
+	     for (i <-0 until 5)
+	      Solpool.iteration(soln,solpool,funclist)
+	    
+	     
+	     println("---------Now Filter solutions ----")
+	      solpool.sols.foreach(solx => {
 	       solx.portlist.foreach(orderc => print(orderc.partid+"-"+orderc.days+"-"+ orderc.quantity + " "))
 	       print("---"+solx.fitness)
 	       println()
