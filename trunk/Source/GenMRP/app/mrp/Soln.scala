@@ -177,7 +177,7 @@ object Soln{
   
   
   
-  private def functioneval(fn:String,Q:Int): Double ={
+/*  private def functioneval(fn:String,Q:Int): Double ={
     
    val manager = new ScriptEngineManager()
    var engin = manager.getEngineByName("js")
@@ -238,15 +238,15 @@ object Soln{
 	// 						println()})
 	
 	
-	/*for( i <- 0 until poolsize){
+	for( i <- 0 until poolsize){
 	  //solarray(i).portlist.foreach(or =>print(or.quantity+" ") )
 	  var tempsol = solarray(i)
 	  tempsol.portlist.foreach(or => print(or.quantity+" "))
 	  println()
-	}*/
+	}
 	
 	
-	/*while(!solpool.isEmpty){	  
+	while(!solpool.isEmpty){	  
 	  
 	  var temp_sol = solpool.pop()
 	  
@@ -254,7 +254,7 @@ object Soln{
 	  
 	  println()
 	  
-	}*/
+	}
 	  
     return solpooltem.sols
   }
@@ -298,7 +298,7 @@ object Soln{
      fitnessval = 1/fitnessval
      soln.fitness = fitnessval
      //fitnessval
-  }
+  }*/
     
     
   
