@@ -2,13 +2,25 @@
 @import helper._
 
 @main("Sign in"){
-	
-	@form(routes.Application.savecompany){
+	<table id="signin">
+	<tr>
+	<td>
+	@form(action = routes.Application.savecompany,'id -> "signin"){
 		@inputText(signinform("Company Id"),'placeholder -> "IFS")
 		@inputText(signinform("Name"))
 		@inputPassword(signinform("Password"))
 		@inputText(signinform("Description"))
 		<input type="submit" value="Submint">
+		<input type="reset" value ="Clear">
 	}
+	</td>
+	<td>
+	<image src="@routes.Assets.at("images/businessman.jpg")" />
+	 Enter a company Id with that would give a short name for your company. Enter a secret password.These fields are the 
+	 required fields for registering the company. Name and Description can be given as you wish to describe you company.
+	</td>
+	</tr>
+	</table>
+	
 
 }

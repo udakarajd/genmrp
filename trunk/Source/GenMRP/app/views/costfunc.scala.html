@@ -3,19 +3,29 @@
 
 @main("Part Cost functions"){
 
-	@form(routes.Application.costfuncadd){
-		@inputText(costfuncForm("Company ID"))
-		@inputText(costfuncForm("Part ID"))
-		@inputText(costfuncForm("Function ID"))
-		@inputText(costfuncForm("Function"))
-		<input type="submit" value="add function">
+	@form(action = routes.Application.costfuncadd,'id -> "genmrpform"){
+		<table>
+		<tr>
+		<td>@inputText(costfuncForm("Company ID"))</td>
+		<td>@inputText(costfuncForm("Part ID"))</td>
+		<td>@inputText(costfuncForm("Function ID"),'size -> 10)</td>
+		<td>@inputText(costfuncForm("Function"),'size -> 40)</td>
+		</tr>
+		</table>
+		<input type="submit" value="add function"/>
+		<input type="reset" value ="Clear"/>
 	}
-	<table>
+	<table id="flowdata" border="1">
+	<tr>
+		<th>Function Id</th>
+		<th>Function f(Q)</th>
+		<th>Del</th>
+	</tr>
 	@costfuncs.map{costfunc =>
 	<tr>
 		<td> @costfunc.funcid</td>
 		<td> @costfunc.functxt</td>
-		<td><a href ="@routes.Application.costfuncdelete(costfunc.partid,costfunc.funcid)">Delete</a></td>
+		<td><a href ="@routes.Application.costfuncdelete(costfunc.partid,costfunc.funcid)"><image src = "@routes.Assets.at("images/icontexto-message-types-error-purple16.png")"/></a></td>
 	</tr>
 		
 		

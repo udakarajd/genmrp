@@ -7,18 +7,27 @@
     <p/>
     <h3>Add new parts</h3>
     
-    @form(routes.Application.partadd){
-        @inputText(partForm("CompId"))
-		@inputText(partForm("PartId"))    
-    	@inputText(partForm("Part name")) 	
-    	@inputText(partForm("Lead time"))
-    	@inputText(partForm("On Hand"))
-    	
-    	<input type="submit" value="Add Part">
+    @form(action = routes.Application.partadd, 'id -> "genmrpform"){
+    <table>
+    <tr>
+    <td>@inputText(partForm("CompId")) 
+    </td>
+    <td>@inputText(partForm("PartId"))
+    </td>
+    <td>@inputText(partForm("Part name"))
+    </td>
+    <td>@inputText(partForm("Lead time"),'size -> 10)
+    </td>
+    <td>@inputText(partForm("On Hand"),'size -> 10)
+    </td>
+    </tr>
+    </table>
+        <input type="submit" value="Add Part">
+        <input type="reset" value ="Clear">
     }
     
     <h3>Products and  parts</h3>
-    <table border="1">
+    <table id="flowdata" border="1">
     <tr>
     	<th>Company</th>
     	<th>Part Id</th>
@@ -31,8 +40,9 @@
     	<th></th>
     	
     </tr>
+   
     @parts.map{ part =>
-    <tr>
+     <tr>  
      <td>@part.compid</td>
      <td>@part.partid</td>
      <td>@part.partname</td>
