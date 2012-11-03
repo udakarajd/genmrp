@@ -5,25 +5,30 @@
 
 	<h1>Company Orders</h1>
 	
-	@form(routes.Application.ordernew){
-		@inputText(orderform("Company ID"))
-		@inputText(orderform("Part ID"))
-		@inputText(orderform("Order Id"))
-		@inputText(orderform("Schedule ID"))
-		@inputText(orderform("Days"))
-		@inputText(orderform("Quantity"))
-	<input type="submit" value="Order"/>	
+	@form(action = routes.Application.ordernew, 'id -> "genmrpform"){
+	<table>
+	<tr>
+		<td>@inputText(orderform("Company ID"))</td>
+		<td>@inputText(orderform("Part ID"))</td>
+		<td>@inputText(orderform("Order Id"),'size-> 10)</td>
+		<td>@inputText(orderform("Schedule ID"),'size -> 10)</td>
+		<td>@inputText(orderform("Days"),'size -> 8)</td>
+		<td>@inputText(orderform("Quantity"),'size -> 8)</td>
+	</tr>
+	</table>
+	<input type="submit" value="Order"/>
+	 <input type="reset" value ="Clear">	
 	}
    
-   <table border="1">
+   <table id="flowdata" border="1">
    	<tr>
    		<th>Company Id</th>
    		<th>Part id</th>
    		<th>Order id</th>
    		<th>Schedule id</th>
-   		<th>In how many days</th>
+   		<th>Periods </th>
    		<th>Quantity</th>
-   		<th></th>
+   		<th>Delete</th>
    	</tr>
    @orders.map{order =>
     <tr>
@@ -33,7 +38,7 @@
     	<td>@order.scheduleid</td>
     	<td>@order.days</td>
     	<td>@order.quantity</td>
-    	<td><a href ="@routes.Application.orderremove(order.orderid)">delete</a><td>
+    	<td align="center"><a href ="@routes.Application.orderremove(order.orderid)"><image src = "@routes.Assets.at("images/icontexto-message-types-error-purple16.png")"/></a><td>
     </tr>
     		
    }

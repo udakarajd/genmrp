@@ -113,7 +113,7 @@ object Order{
 	      println("Random solution")
 	      //var randsol =  Soln.generate_random_sol(soln)
 	      //var randsol = Solpool.generate_poolof_random_sol(10,soln)
-	      var randsol = Solpool.generate_poolof_valid_random_sol(30,soln)
+	      var randsol = Solpool.generate_poolof_valid_random_sol(10,soln)
 	      println("Rand Solution length" + randsol.length)
 	      var funclist = Costfunction.all_company_parts(compid)
 	      randsol.foreach(solx => {
@@ -133,7 +133,7 @@ object Order{
 	     println("-------- Now we create crossover pool---------")
 	     var solpool = Solpool(randsol)
 	     //Solpool.gen_crossover_pop(soln,solpool,funclist)
-	     for (i <-0 until 5)
+	     for (i <-0 until 10	)
 	      Solpool.iteration(soln,solpool,funclist)
 	    
 	     

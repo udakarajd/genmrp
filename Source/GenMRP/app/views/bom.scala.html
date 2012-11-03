@@ -4,26 +4,30 @@
 @main("Bom sub parts"){
 	<h1> The Bill Of Materials (BOM) sub parts </h1>
 	<h2>Add sub part</h2>
-	@form(routes.Application.bomadd){
-		@inputText(bomForm("Company ID"))
-		@inputText(bomForm("Part ID"))
-		@inputText(bomForm("Child Part"))
-		@inputText(bomForm("Quantity"))
+	@form(action = routes.Application.bomadd,'id -> "genmrpform"){
+		<table>
+		<tr>
+		<td>@inputText(bomForm("Company ID"))</td>
+		<td>@inputText(bomForm("Part ID"))</td>
+		<td>@inputText(bomForm("Child Part"))</td>
+		<td>@inputText(bomForm("Quantity"),'size -> 10)</td>
+		</tr>
+		</table>
 		<input type="submit" value="Add Child">
 		
 	}
-	<table border="1">
+	<table id="flowdata" border="1">
 	<tr>
 	 <th>Child part Id</th>
 	 <th>Quantity</th>
-	 <th></th>
+	 <th>Del</th>
 	</tr>
 	
 	@boms.map{bom =>
 		<tr>
 			<td>@bom.childpartid</td>
 			<td>@bom.quantity</td>
-			<td> <a href="@routes.Application.bomdelete(bom.partid,bom.childpartid)">Delete</a>
+			<td> <a href="@routes.Application.bomdelete(bom.partid,bom.childpartid)"><image src = "@routes.Assets.at("images/icontexto-message-types-error-purple16.png")"/></a>
 			</td>
 		</tr>
 	}
