@@ -100,6 +100,7 @@ object Order{
     
     porlist = soln.portlist 
     neworderlist = soln.orderlist
+    mainsoln = soln.copy()
     
     if(ordersuccess){
       orderinfo =" All orders can be successfully Released"
@@ -107,7 +108,7 @@ object Order{
 	    //validate solution test        
 	    if (Soln.validate_sol(soln)){
 	      orderinfo += "- Validate Success "
-	      println("Valid Solution -")
+	      /*println("Valid Solution -")
 	      soln.portlist.foreach(order => print(order.quantity+" "))
 	      println() 
 	      println("Random solution")
@@ -142,7 +143,7 @@ object Order{
 	       solx.portlist.foreach(orderc => print(orderc.partid+"-"+orderc.days+"-"+ orderc.quantity + " "))
 	       print("---"+solx.fitness)
 	       println()
-	     })
+	     })*/
 	     
 	     
 	    }else{
@@ -201,13 +202,15 @@ object Order{
       Nil
     }     
   }
+  def getMainSol : Soln ={
+    mainsoln
+  }
+ 
+  
   
   var porlist: List[Order]= _
   var neworderlist : List[Order] = _
-  
-  
-  
-  
+  var mainsoln :Soln =_ 
   
   
   

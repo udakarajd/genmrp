@@ -1,0 +1,21 @@
+ @(genConfigForm: Form[Genconfig])
+ 
+ @import helper._
+ 
+ 
+ @main("Configure Genetic parameters"){
+ 
+   <div>
+   	<p> Configure your Genetic engine parameters below. pool size will determine the number of random solutions that will
+   	 be created in a single genetic operation. Iterations determine the number of cycles that you want to perform crossovers
+   	 and mutations on your Random sample sample space.</p> 
+   </div>
+   
+   @form(action = routes.Application.genconfupdate, 'id -> "signin"){
+   			@inputText(genConfigForm("Pool Size"))
+   			@inputText(genConfigForm("Iterations"))
+   			<input type="submit" value ="Set"/>
+   		
+   }
+ 
+ }

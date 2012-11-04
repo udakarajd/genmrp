@@ -1,0 +1,28 @@
+
+@(solpool:gen.Solpool)
+
+@import helper._
+@import mrp.Soln
+@import gen.Solpool
+
+
+@main("Solution Pool"){
+
+  <h1>Optimized solution</h1>
+
+  <table>
+  @solpool.sols.map{solx => 
+  			<tr>
+	       @solx.portlist.map{orderc =>
+			<td>@orderc.partid </td>
+			<td>@orderc.days </td>
+			<td>@orderc.quantity </td> 
+			}
+	       <td>@solx.fitness</td>
+	       
+	     
+	     	</tr>
+	     }
+
+   </table>
+}

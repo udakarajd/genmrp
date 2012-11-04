@@ -9,6 +9,7 @@ import models.LoginInfo
 import models.Bom
 import models.Costfunction
 import models.Order
+import models.Genconfig
 
 import play.api.data._
 import play.api.data.Forms._
@@ -18,6 +19,9 @@ import views.html.defaultpages.unauthorized
 import play.api.libs.concurrent.Akka
 import play.api.libs.concurrent.Promise
 import play.api.Play.current
+
+import gen.Solpool
+import mrp.Soln
 
 
 
@@ -221,21 +225,68 @@ object Application extends Controller {
     }
     
   }
-
-/*
-  def genpor = Action{implicit request =>
-    request.session.get("companyid").map{compid =>
+  //------------------1.7 Genetic config actions ----------
+ 
+  def genconf = Action{implicit request =>
+    request.session.get("companyid").map{ compid => 
       
-     var message=  Order.gen_por(compid)
+      Ok(views.html.genconfig(genConfigForm.fill(Genconfig.getConfig(compid))))
+      
+    }.getOrElse{
+      Redirect(routes.Application.login)
+    }
+    
+  }
+    
+  
+  def genconfupdate =  Action{implicit request =>
+    var compid = "" 
      
-     Ok(views.html.por(message,(Order.company_order_snapshot(compid) ++ Order.getNewOrderList).sortWith(_.days > _.days),(Order.getPorList).sortWith(_.days > _.days)))
+    request.session.get("companyid").map{companyid =>
+      compid = companyid
+    }.getOrElse{
+      Redirect(routes.Application.login)
+    }
+  	genConfigForm.bindFromRequest.fold(
+  			Errors => BadRequest(views.html.genconfig(Errors)),
+  			genconfig => {
+  			  var tempgenconfig: Genconfig = Genconfig.getConfig(compid)
+  			 // println( "Pool size is"+tempgenconfig.poolsize)
+  			  if(tempgenconfig.poolsize == 0 && tempgenconfig.iterations == 0){
+  			    Genconfig.setConfig(compid,genconfig)
+  			  }else{
+  			    Genconfig.updateConfig(compid,genconfig)
+  			  }
+  			  Redirect(routes.Application.genconf)
+  			}
+  			
+  	)  
+  }
+  //----------------- 1.8 Execute Genetic opperation--------
+  
+  def genpopulate = Action{implicit request => 
+    request.session.get("companyid").map{compid =>      
+    var solpool :Solpool = Solpool(Nil) 
+    var messagepromis: Promise[Solpool] = Akka.future{ 
+       var soln = Order.getMainSol
+       solpool = Genconfig.executeGen(soln,compid)
+       
+       solpool
+     }
+     Async{
+       messagepromis.map(sols =>           
+    		   Ok(views.html.genpop(solpool))
+       ) 
+       
+     } 
      
     }.getOrElse{
        Redirect(routes.Application.login)
     }
     
   }
- */
+  
+  
   //------------------ Form mappings -----------------------
   val loginForm = Form(
       mapping (
@@ -292,7 +343,14 @@ object Application extends Controller {
 				  "Days" 		-> number,
 				  "Quantity" 	-> number		      
 		      )(models.Order.apply)(models.Order.unapply)
-  )  
+  )
+  
+  val genConfigForm = Form(
+		  mapping(
+				  "Pool Size" -> number,
+				  "Iterations" -> number
+		  )(Genconfig.apply)(Genconfig.unapply)	
+  )
     
     
 }
