@@ -25,4 +25,7 @@ GET     /order						controllers.Application.order
 POST    /ordernew					controllers.Application.ordernew
 GET		/orderremove/:orderid		controllers.Application.orderremove(orderid : Int)
 GET     /orderpart/:partid			controllers.Application.orderpart(partid:String)
-GET		/genpor						controllers.Application.genpor  
+GET		/genpor						controllers.Application.genpor
+GET     /genconf					controllers.Application.genconf
+POST    /genconfupdate 				controllers.Application.genconfupdate
+GET		/genpopulate 				controllers.Application.genpopulate 

@@ -82,6 +82,13 @@ CREATE TABLE costfunction(
 	
 );
 
+CREATE TABLE genengine(
+	compid varchar(40) NOT NULL,
+	poolsize int DEFAULT 10,
+	iterations int DEFAULT 10,	
+	FOREIGN KEY(compid) REFERENCES company(compid)
+)
+
 
 
 

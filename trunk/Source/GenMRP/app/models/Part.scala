@@ -16,7 +16,7 @@ object Part{
   def allCompanyParts(compid:String) : List[Part] = DB.withConnection{implicit c => SQL("select * from part where compid = {compid}").on('compid ->compid).as(part *)}
     
     
-  def add(part:Part){
+  def add(part:Part)= {
     
   DB.withConnection { implicit c =>
     SQL("insert into part(compid,partid,partname,leadtime,onhand) values({compid},{partid},{partname},{leadtime},{onhand})").on(
