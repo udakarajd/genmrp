@@ -89,6 +89,7 @@ CREATE TABLE genengine(
 	FOREIGN KEY(compid) REFERENCES company(compid)
 )
 
+ALTER TABLE genengine ADD maxorder int DEFAULT 200;
 
 
 

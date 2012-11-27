@@ -9,6 +9,7 @@ import scala.collection.mutable.Stack
 
 import mrp.Soln
 import gen.Solpool
+import Reports.Report
 
 case class Order(compid:String,partid:String,orderid:Int ,scheduleid:Int,days:Int, quantity:Int)
 
@@ -22,7 +23,26 @@ object Order{
     )
   }
   
- 
+  
+  def updateorder(order:Order) ={
+    DB.withConnection(implicit c =>
+    	SQL("update ordersnapshot set days={days} , quantity={quantity} where " +
+    			"compid={compid} and partid={partid} and orderid={orderid} and scheduleid={scheduleid} ").on(
+    		'days -> order.days,	
+    	    'quantity -> order.quantity,
+    	    'compid -> order.compid,
+    	    'partid -> order.partid,
+    	    'orderid -> order.orderid,
+    	    'scheduleid -> order.scheduleid
+    	).executeUpdate()
+    	
+    )
+  }
+  def getOrder(compid:String,orderid:Int):Order ={
+    var orders = DB.withConnection(implicit c => SQL("select * from ordersnapshot where compid={compid} and orderid={orderid}").on('compid -> compid,'orderid -> orderid).as(order *))
+    orders.head
+  
+  }
   
   def put_order(order:Order) = {
     DB.withConnection(implicit c=>
@@ -92,6 +112,7 @@ object Order{
   
     var soln = Soln(partslist.clone(),Bom.getCompanyBom(compid),company_orders(compid),Nil,0.0)
     
+    setPrimSoln(soln)
     porlist =Nil
     neworderlist = Nil    
        
@@ -102,12 +123,23 @@ object Order{
     neworderlist = soln.orderlist
     mainsoln = soln.copy()
     
+    
+    /*println("portlist lenthg" + soln.portlist.length)
+    soln.portlist.foreach(order => print(order.quantity+" "))
+    println()
+    println("orderlist length"+ soln.orderlist.length)
+    soln.orderlist.foreach(order => print(order.quantity+" "))*/
+    println()
     if(ordersuccess){
       orderinfo =" All orders can be successfully Released"
         
 	    //validate solution test        
 	    if (Soln.validate_sol(soln)){
-	      orderinfo += "- Validate Success "
+	      orderinfo += "- Validate Success <br/>"
+	      var r = Report.reportSoln(soln)
+	      //println(r.body)
+	      orderinfo = r.body
+	      
 	      /*println("Valid Solution -")
 	      soln.portlist.foreach(order => print(order.quantity+" "))
 	      println() 
@@ -206,12 +238,18 @@ object Order{
     mainsoln
   }
  
+  def getPrimSoln : Soln ={
+    primsoln
+  }
+  def setPrimSoln(soln:Soln) ={
+    primsoln = soln.copy()  //Only orders in the db
+  }
   
   
   var porlist: List[Order]= _
   var neworderlist : List[Order] = _
   var mainsoln :Soln =_ 
-  
+  var primsoln :Soln =_
   
   
   

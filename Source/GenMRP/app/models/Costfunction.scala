@@ -44,6 +44,29 @@ object Costfunction{
       ).executeUpdate()      
     )
   }
+  def getcostfunc(compid : String,partid: String, funcid: String):Costfunction ={
+   var cfs = DB.withConnection(implicit c=>
+    	SQL("select * from costfunction where compid={compid} and partid={partid} and funcid={funcid}").on(
+		       'compid -> compid,
+		       'partid -> partid,
+		       'funcid -> funcid
+		   ).as(costfunction *)
+    )
+    cfs.head
+    
+  }
+  
+  def update(costfunc: Costfunction)={
+    DB.withConnection(implicit c =>
+    	SQL("update costfunction set functxt ={functxt} where compid={compid} and partid={partid} and funcid={funcid}").on(
+    		   'functxt -> costfunc.functxt,
+    		   'compid -> costfunc.compid,
+		       'partid -> costfunc.partid,
+		       'funcid -> costfunc.funcid
+    	).executeUpdate()
+    )
+    
+  }
   
   
   val costfunction ={

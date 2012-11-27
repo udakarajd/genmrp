@@ -1,0 +1,17 @@
+@(message : String)
+
+@main("Working on Genetic optimization") {
+<script>
+ function genpopulate(){
+	 window.location.href = "@routes.Application.genpopulate";
+	 
+ }
+</script>
+<body onload ="genpopulate()">
+	
+	<center><image src="@routes.Assets.at("images/matrix-animated-image.gif")" /><image src="@routes.Assets.at("images/matrix-animated-image.gif")" /></center>
+
+	<h2> Working ....</h2>
+	<button  name ="GEN" onClick="genpopulate()" /> 
+</body>	
+}

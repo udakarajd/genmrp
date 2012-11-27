@@ -1,0 +1,27 @@
+@(orderform :Form[Order])
+@import helper._
+
+@main("Update order"){
+	 <ul id="menu">
+		<li id="menu"><a id="mele" href="/">Home</a></li>
+		<li id="menu"><a id="mele" href="/part">Parts</a></li>
+		<li id="menu"><a id="mele" href="/order">Orders</a></li>
+		<li id="menu"><a id="mele" href="/genconf">GenConfig</a></li>
+		<li id="menu"><a id="mele" href="/logout">Logout</a></li>
+	</ul>
+	<h2>Update Order</h2>
+
+@form(action = routes.Application.orderupdate, 'id -> "updateform"){
+	@inputText(orderform("Company ID"))
+	@inputText(orderform("Part ID"))
+	@inputText(orderform("Order Id"),'size-> 10)
+	@inputText(orderform("Schedule ID"),'size -> 10)
+	@inputText(orderform("Days"),'size -> 8)
+	@inputText(orderform("Quantity"),'size -> 8)
+	<input type="submit" value="Update Order"/>
+	 
+	}
+
+
+
+}

@@ -22,6 +22,7 @@ import play.api.Play.current
 
 import gen.Solpool
 import mrp.Soln
+import Reports.Report
 
 
 
@@ -44,7 +45,8 @@ object Application extends Controller {
            Ok(views.html.login(loginForm))
   }
   def logout =Action{implicit request => 
-    Ok(views.html.index("Invalid Company")).withSession(session -"companyid")
+    //Ok(views.html.index("Invalid Company")).withSession(session -"companyid")
+    Ok(views.html.login(loginForm)).withNewSession
   }
   
   def loginvalidate = Action{ implicit request =>
@@ -109,6 +111,28 @@ object Application extends Controller {
       }
          
   }
+  def prepartupdate(partid:String) = Action{implicit request =>
+  	request.session.get("companyid").map{compid =>
+  		Ok(views.html.partupdate(partForm.fill(Part.getpart(compid,partid))))
+  	}.getOrElse{
+  	  Redirect(routes.Application.login)
+  	  
+  	}
+  	    
+  	
+  }
+  
+  def partupdate= Action{implicit request =>
+  	partForm.bindFromRequest.fold(
+  	    Errors => BadRequest(views.html.part(Part.all(),Errors)),
+        part =>{ 
+          Part.update(part)
+         Redirect(routes.Application.part)
+          }
+  	    
+  	)
+  
+  }
    //------------------1.4 Bom actions---------------------------
  
   def bom (partid : String)= Action{ implicit request => 
@@ -170,6 +194,29 @@ object Application extends Controller {
     }
   }
   
+  def precostfuncupdate(partid : String, funcid : String) = Action{implicit request =>
+    request.session.get("companyid").map{compid =>
+  		Ok(views.html.costfuncupdate(costForm.fill(Costfunction.getcostfunc(compid,partid,funcid))))
+  	}.getOrElse{
+  	  Redirect(routes.Application.login)
+  	  
+  	}
+  
+  }
+  
+  def costfuncupdate = Action{implicit request =>
+    costForm.bindFromRequest.fold(
+    	Errors=> BadRequest(views.html.costfuncupdate(Errors)),
+        costfunc =>{
+          Costfunction.update(costfunc)
+          Redirect(routes.Application.costfunc(costfunc.partid))
+          
+        }	
+    
+    )
+    
+  }
+  
   //------------------1.6 Order Actions----------------------
   
   
@@ -205,8 +252,28 @@ object Application extends Controller {
      }.getOrElse{
        Redirect(routes.Application.login)
     }
-    	
+  }
+  
+  def perorderupdate(orderid:Int) = Action{implicit request =>
+    request.session.get("companyid").map{ compid =>
+      
+      Ok(views.html.orderupdate(orderForm.fill(Order.getOrder(compid,orderid))))
+    }.getOrElse{
+      Redirect(routes.Application.login)
+    }
     
+  }
+  
+  def orderupdate = Action{implicit request =>
+    orderForm.bindFromRequest.fold(
+     error => BadRequest(views.html.orderupdate(error)),
+     order => {
+       Order.updateorder(order)
+       Redirect(routes.Application.order)
+     }
+    )
+      
+   
     
   }
   
@@ -262,20 +329,24 @@ object Application extends Controller {
   			
   	)  
   }
-  //----------------- 1.8 Execute Genetic opperation--------
+  //----------------- 1.8 Execute Genetic operation--------
   
   def genpopulate = Action{implicit request => 
-    request.session.get("companyid").map{compid =>      
+    request.session.get("companyid").map{compid => 
+    var timediff = "";
     var solpool :Solpool = Solpool(Nil) 
     var messagepromis: Promise[Solpool] = Akka.future{ 
        var soln = Order.getMainSol
-       solpool = Genconfig.executeGen(soln,compid)
+       var primsol = Order.getPrimSoln
+       var starttime = System.currentTimeMillis()
        
+       solpool = Genconfig.executeGen(soln,primsol,compid)
+       timediff = Genconfig.TimeDiff(System.currentTimeMillis()-starttime)
        solpool
      }
      Async{
        messagepromis.map(sols =>           
-    		   Ok(views.html.genpop(solpool))
+    		   Ok(views.html.genpop(solpool,(Report.reportSoln(solpool.sols.head)).body,timediff))
        ) 
        
      } 
@@ -284,6 +355,10 @@ object Application extends Controller {
        Redirect(routes.Application.login)
     }
     
+  }
+  
+  def genworking = Action {
+     Ok(views.html.genworking("Working"))
   }
   
   
@@ -348,7 +423,8 @@ object Application extends Controller {
   val genConfigForm = Form(
 		  mapping(
 				  "Pool Size" -> number,
-				  "Iterations" -> number
+				  "Iterations" -> number,
+				  "Max order count" -> number
 		  )(Genconfig.apply)(Genconfig.unapply)	
   )
     
