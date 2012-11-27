@@ -2,6 +2,13 @@
 @import helper._
 
 @main("Company orders"){
+	 <ul id="menu">
+		<li id="menu"><a id="mele" href="/">Home</a></li>
+		<li id="menu"><a id="mele" href="/part">Parts</a></li>
+		<li id="menu"><a id="mele" href="/order">Orders</a></li>
+		<li id="menu"><a id="mele" href="/genconf">GenConfig</a></li>
+		<li id="menu"><a id="mele" href="/logout">Logout</a></li>
+	</ul>
 
 	<h1>Company Orders</h1>
 	
@@ -26,7 +33,7 @@
    		<th>Part id</th>
    		<th>Order id</th>
    		<th>Schedule id</th>
-   		<th>Periods </th>
+   		<th>Time Frame</th>
    		<th>Quantity</th>
    		<th>Delete</th>
    	</tr>
@@ -38,15 +45,21 @@
     	<td>@order.scheduleid</td>
     	<td>@order.days</td>
     	<td>@order.quantity</td>
-    	<td align="center"><a href ="@routes.Application.orderremove(order.orderid)"><image src = "@routes.Assets.at("images/icontexto-message-types-error-purple16.png")"/></a><td>
+    	<td align="center"><a href ="@routes.Application.orderremove(order.orderid)"><image src = "@routes.Assets.at("images/icontexto-message-types-error-purple16.png")"/></a></td>
+    	<td><a href="@routes.Application.perorderupdate(order.orderid)">update</a></td>
     </tr>
     		
    }
    </table>
-   <a href="@routes.Application.genpor">Generate Purchase Order Release</a>
+   <table>
+   <tr>
+   <td><a href="@routes.Application.genpor"><image src="@routes.Assets.at("images/POR.jpg")" /></a></td>
+   <td width="400px"> Click on “Purchase order release” to generate the planned order release. This will give you the planned purchase order releases for the received orders above.<br/>
+ If the planned order releases are not feasible. The GenMRP will give you an error. This means that you cant fulfill the received orders in time.  </td>
+   </tr>
+   </table>
    <br/>
    
-   <a href="/">Home</a> ,
-   <a href="@routes.Application.part">parts</a>
+   
 
 }

@@ -14,7 +14,11 @@ object Part{
   def all() : List[Part]= DB.withConnection{implicit c => SQL("select * from part").as(part *)}
   
   def allCompanyParts(compid:String) : List[Part] = DB.withConnection{implicit c => SQL("select * from part where compid = {compid}").on('compid ->compid).as(part *)}
-    
+  
+  def getpart(compid:String, partid:String):Part = {
+    var parts = DB.withConnection{implicit c => SQL("select * from part where compid = {compid} and partid={partid}").on('compid -> compid, 'partid -> partid).as(part *)}
+    parts.head
+  }
     
   def add(part:Part)= {
     
@@ -26,20 +30,25 @@ object Part{
   }
   
   
-  def remove(part: Part){
+  def remove(part: Part)={
     DB.withConnection{implicit c =>
     SQL("delete from part where compid = {compid} and partid = {partid} ").on(
         'compid->part.compid , 'partid ->part.partid
         ).executeUpdate()
     }
-    
-   
-   //--------------------------find part from a List by partid
-  // def get_part_by_id(partid:String ,parts:List[Part]): Part ={
-   // } 
-  
-   
-    
+      
+  }
+  def update(part: Part)={
+    DB.withConnection{implicit c =>
+      SQL("update part set partname={partname},leadtime={leadtime} , onhand={onhand} where compid={compid} and partid={partid}").on(
+          'partname -> part.partname,
+          'leadtime -> part.leadtime,
+          'onhand -> part.onhand,
+          'compid -> part.compid,
+          'partid -> part.partid
+          ).executeUpdate()
+      
+    }
     
   }
   

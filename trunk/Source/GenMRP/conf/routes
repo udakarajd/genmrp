@@ -15,6 +15,7 @@ POST    /part						controllers.Application.partadd
 POST    /login						controllers.Application.loginvalidate
 POST	/signin						controllers.Application.savecompany
 GET     /partdelete/:partid			controllers.Application.partdelete(partid:String)
+GET     /prepartupdate/:partid		controllers.Application.prepartupdate(partid:String)
 GET		/bom/:partid				controllers.Application.bom(partid:String)
 POST	/bomadd						controllers.Application.bomadd
 GET     /bomdelet/:partid/:childpartid 				controllers.Application.bomdelete(partid : String,childpartid :String)
@@ -23,9 +24,15 @@ POST	/costfuncadd				controllers.Application.costfuncadd
 GET		/costfuncdelete/:partid/:funcid controllers.Application.costfuncdelete(partid:String, funcid:String)
 GET     /order						controllers.Application.order
 POST    /ordernew					controllers.Application.ordernew
+POST    /orderupdate				controllers.Application.orderupdate
+GET		/perorderupdate/:orderid	controllers.Application.perorderupdate(orderid: Int)
 GET		/orderremove/:orderid		controllers.Application.orderremove(orderid : Int)
 GET     /orderpart/:partid			controllers.Application.orderpart(partid:String)
 GET		/genpor						controllers.Application.genpor
 GET     /genconf					controllers.Application.genconf
 POST    /genconfupdate 				controllers.Application.genconfupdate
-GET		/genpopulate 				controllers.Application.genpopulate 
+GET		/genpopulate 				controllers.Application.genpopulate
+POST	/partupdate					controllers.Application.partupdate
+POST    /costfuncupdate				controllers.Application.costfuncupdate
+GET     /precostfuncupdate/:partid/:funcid 		controllers.Application.precostfuncupdate(partid : String, funcid : String)
+GET 	/genworking					controllers.Application.genworking

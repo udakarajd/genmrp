@@ -2,7 +2,14 @@
 @import helper._
 
 @main("Part Cost functions"){
-
+	 <ul id="menu">
+		<li id="menu"><a id="mele" href="/">Home</a></li>
+		<li id="menu"><a id="mele" href="/part">Parts</a></li>
+		<li id="menu"><a id="mele" href="/order">Orders</a></li>
+		<li id="menu"><a id="mele" href="/genconf">GenConfig</a></li>
+		<li id="menu"><a id="mele" href="/logout">Logout</a></li>
+	</ul>
+	<h2>Cost functions of part</h2>
 	@form(action = routes.Application.costfuncadd,'id -> "genmrpform"){
 		<table>
 		<tr>
@@ -19,13 +26,15 @@
 	<tr>
 		<th>Function Id</th>
 		<th>Function f(Q)</th>
-		<th>Del</th>
+		<th>Delete</th>
+		<th>Update</th>
 	</tr>
 	@costfuncs.map{costfunc =>
 	<tr>
 		<td> @costfunc.funcid</td>
 		<td> @costfunc.functxt</td>
 		<td><a href ="@routes.Application.costfuncdelete(costfunc.partid,costfunc.funcid)"><image src = "@routes.Assets.at("images/icontexto-message-types-error-purple16.png")"/></a></td>
+		<td><a href ="@routes.Application.precostfuncupdate(costfunc.partid,costfunc.funcid)"> Update</a></td>
 	</tr>
 		
 		

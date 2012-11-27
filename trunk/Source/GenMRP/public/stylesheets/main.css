@@ -89,6 +89,12 @@ table#home td { table-layout:fixed; overflow:hidden; word-wrap:break-word;text-a
     width: 160px;
 }
 
+ul {
+    padding-left: 20px;
+}
+
+
+
 .buttons {
     background: #536565;
     padding: 10px;
@@ -106,9 +112,7 @@ table#home td { table-layout:fixed; overflow:hidden; word-wrap:break-word;text-a
     color: #000;
 }
 
-ul {
-    padding-left: 20px;
-}
+
 
 #flowdata td, #flowdata th 
 {
@@ -129,4 +133,34 @@ color:#ffffff;
 {
 color:#000000;
 background-color:#EAF2D3;
+}
+
+
+ul#menu
+{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	overflow:hidden;
+}
+li#menu
+{
+	float:left;
+}
+a#mele:link,a#mele:visited
+{
+	display:block;
+	width:120px;
+	font-weight:bold;
+	color:#FFFFFF;
+	background-color:#98bf21;
+	text-align:center;
+	padding:4px;
+	text-decoration:none;
+	text-transform:uppercase;
+}
+a#mele:hover,a#mele:active
+{
+	background-color:#7A991A;
+	
 }
