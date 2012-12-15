@@ -90,6 +90,9 @@ CREATE TABLE genengine(
 )
 
 ALTER TABLE genengine ADD maxorder int DEFAULT 200;
+ALTER TABLE genengine ADD workers  int DEFAULT 4;
+ALTER TABLE genengine ADD reports  varchar(400) DEFAULT '.';
+
 
 
 

@@ -123,59 +123,15 @@ object Order{
     neworderlist = soln.orderlist
     mainsoln = soln.copy()
     
-    
-    /*println("portlist lenthg" + soln.portlist.length)
-    soln.portlist.foreach(order => print(order.quantity+" "))
-    println()
-    println("orderlist length"+ soln.orderlist.length)
-    soln.orderlist.foreach(order => print(order.quantity+" "))*/
     println()
     if(ordersuccess){
       orderinfo =" All orders can be successfully Released"
         
-	    //validate solution test        
 	    if (Soln.validate_sol(soln)){
 	      orderinfo += "- Validate Success <br/>"
 	      var r = Report.reportSoln(soln)
-	      //println(r.body)
 	      orderinfo = r.body
-	      
-	      /*println("Valid Solution -")
-	      soln.portlist.foreach(order => print(order.quantity+" "))
-	      println() 
-	      println("Random solution")
-	      //var randsol =  Soln.generate_random_sol(soln)
-	      //var randsol = Solpool.generate_poolof_random_sol(10,soln)
-	      var randsol = Solpool.generate_poolof_valid_random_sol(10,soln)
-	      println("Rand Solution length" + randsol.length)
-	      var funclist = Costfunction.all_company_parts(compid)
-	      randsol.foreach(solx => {
-	      		solx.portlist.foreach(orderc =>// print(orderc.partid+"-"+orderc.days+"-"+ orderc.quantity + " "))
-	      		Solpool.calc_fitness_value_per_sol(solx,funclist)
-	      		//	print("---"+solx.fitness)
-	      		//println()
-	      		)
-	      	}
-	      )
-	     randsol = randsol.sortWith( _.fitness < _.fitness) 
-	     randsol.foreach(solx => {
-	       solx.portlist.foreach(orderc => print(orderc.partid+"-"+orderc.days+"-"+ orderc.quantity + " "))
-	       print("---"+solx.fitness)
-	       println()
-	     })
-	     println("-------- Now we create crossover pool---------")
-	     var solpool = Solpool(randsol)
-	     //Solpool.gen_crossover_pop(soln,solpool,funclist)
-	     for (i <-0 until 10	)
-	      Solpool.iteration(soln,solpool,funclist)
 	    
-	     
-	     println("---------Now Filter solutions ----")
-	      solpool.sols.foreach(solx => {
-	       solx.portlist.foreach(orderc => print(orderc.partid+"-"+orderc.days+"-"+ orderc.quantity + " "))
-	       print("---"+solx.fitness)
-	       println()
-	     })*/
 	     
 	     
 	    }else{
@@ -201,11 +157,10 @@ object Order{
     
     var sortedorderlist:List[Order] =  List()
     sortedorderlist=Nil
-    //println(maporderlist.toString())
     maporderlist.foreach( m => {
      if(m._2.length>1){
        sortedorderlist ++ m._2.sortWith(_.days >_.days) 
-       //println(m._2)
+       
      }else{
        sortedorderlist ++ m._2
        println(m._2)

@@ -36,6 +36,7 @@
    		<th>Time Frame</th>
    		<th>Quantity</th>
    		<th>Delete</th>
+   		<th>Update</th>
    	</tr>
    @orders.map{order =>
     <tr>
@@ -46,7 +47,7 @@
     	<td>@order.days</td>
     	<td>@order.quantity</td>
     	<td align="center"><a href ="@routes.Application.orderremove(order.orderid)"><image src = "@routes.Assets.at("images/icontexto-message-types-error-purple16.png")"/></a></td>
-    	<td><a href="@routes.Application.perorderupdate(order.orderid)">update</a></td>
+    	<td><a href="@routes.Application.perorderupdate(order.orderid)"><image src="@routes.Assets.at("images/update.jpg")"/></a></td>
     </tr>
     		
    }

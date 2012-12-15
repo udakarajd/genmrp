@@ -2,7 +2,7 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="/">
-
+<div>
 <h2> MRP Solution</h2>
 
 <table border ="1">
@@ -42,7 +42,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	</tr>
 </xsl:for-each>
 </table>
-
+</div>
 
 </xsl:template>
 </xsl:stylesheet>
