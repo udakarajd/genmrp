@@ -18,10 +18,12 @@
    	 and mutations on your Random sample sample space.</p> 
    </div>
    
-   @form(action = routes.Application.genconfupdate, 'id -> "signin"){
+   @form(action = routes.Application.genconfupdate, 'id -> "genconfig"){
    			@inputText(genConfigForm("Pool Size"))
    			@inputText(genConfigForm("Iterations"))
    			@inputText(genConfigForm("Max order count"))
+   			@inputText(genConfigForm("Workers"))
+   			@inputText(genConfigForm("Reports Path"),'size -> 40)
    			<input type="submit" value ="Set"/>
    		
    }

@@ -17,6 +17,11 @@ import org.xml.sax.InputSource;
 import play.Application
 import play.api.Play.current
 
+import java.io._
+import com.lowagie.text.DocumentException
+import org.xhtmlrenderer.pdf.ITextRenderer
+
+
 case class Report(var body:String)
 object Report {
   
@@ -40,8 +45,7 @@ object Report {
           
           var tempsol: Soln = soln.copy()
            if(sol_of_part(part.partid,tempsol)){
-              //rpt.body += reportSolnPart() 
-              rpt.body += reportSolnPart(part,tempsol, startday.days , endday.days)      
+                 rpt.body += reportSolnPart(part,tempsol, startday.days , endday.days)      
            }
            
                 
@@ -49,7 +53,6 @@ object Report {
       )
        rpt.body +="</parts>"
        rpt.body +="</MRP>"
-       // println(rpt.body)
        rpt.body = transformReport(rpt.body)
     rpt
   }
@@ -64,7 +67,11 @@ object Report {
       for(i <- startdays until enddays+1){
          rpt += "<day count=\""+i+"\">"
          if(soln.orderlist.exists(e => e.days == i)){
-           rpt += ""+ soln.orderlist.find(e => e.days == i).head.quantity
+           var sum = 0
+           //soln.orderlist.find(e => e.days == i).foreach(ord=> sum += ord.quantity)
+           soln.orderlist.filter(e => e.days == i).foreach(ord=> sum += ord.quantity)
+           rpt += ""+sum //soln.orderlist.find(e => e.days == i).head.quantity
+           
          }
          
         rpt += "</day>"
@@ -75,7 +82,10 @@ object Report {
         for(i <- startdays until enddays+1){
          rpt += "<day count=\""+i+"\">"
          if(soln.portlist.exists(e => e.days == i)){
-           rpt += ""+ soln.portlist.find(e => e.days == i).head.quantity
+           var sum = 0
+           //soln.portlist.find(e => e.days == i).foreach(ord=> sum += ord.quantity)
+           soln.portlist.filter(e => e.days == i).foreach(ord=> sum += ord.quantity)
+           rpt += ""+ sum //soln.portlist.find(e => e.days == i).head.quantity
          }
          
         rpt += "</day>"
@@ -101,10 +111,7 @@ object Report {
     true
   }
    
- /* def writeXMLtoFIle(xmls:String)={
-    
-    try {val fw = new FileWriter("~/projects/test.xml") ; fw.write(xmls) ; fw.close()}
-  }*/
+
   
    private def transformReport(xmldata : String):String ={
      var reporthtm=""
@@ -120,9 +127,9 @@ object Report {
 	      
 	      var doc = builder.parse( is );
        
-	      //println("Current path"+current.path.getAbsolutePath)
+	      
 	      var layoutpath = current.path.getAbsolutePath.toString()+"/public/stylesheets/mrprpt.xsl"
-	      //var xslfile = new File("/home/lakshika/projects/mrprpt.xsl");
+	      
 	      var xslfile = new File(layoutpath);
 	      if(xslfile.exists()){
 	      
@@ -137,5 +144,30 @@ object Report {
      }   
      reporthtm
    
+   }
+
+
+   def saveReportHtml(report:Report ,outputFile:String) ={
+     var out_file = new FileOutputStream(outputFile)
+     var out_stream = new PrintStream(out_file)
+     out_stream.print("<html><body>")
+     out_stream.print(report.body)
+     out_stream.print("</body></html>")
+     out_stream.close()
+   }
+   
+   def saveReportpdf(report:Report , outputFile:String)={
+     var buf = new StringBuffer()
+     buf.append(report.body)
+     var builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+     var doc = builder.parse(new StringBufferInputStream(buf.toString()));
+     var renderer = new ITextRenderer();   
+     renderer.setDocument(doc, null);
+     var os = new FileOutputStream(outputFile);
+     renderer.layout();
+     renderer.createPDF(os);
+        
+     os.close();
+     
    }
 }

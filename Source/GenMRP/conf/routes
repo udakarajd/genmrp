@@ -36,3 +36,4 @@ POST	/partupdate					controllers.Application.partupdate
 POST    /costfuncupdate				controllers.Application.costfuncupdate
 GET     /precostfuncupdate/:partid/:funcid 		controllers.Application.precostfuncupdate(partid : String, funcid : String)
 GET 	/genworking					controllers.Application.genworking
+GET		/genpopulatereport			controllers.Application.genpopulatereport

@@ -35,18 +35,15 @@ object Application extends Controller {
     request.session.get("companyid").map{ compid => 
       Ok(views.html.index(compid))
       }.getOrElse{
-       //Redirect(views.html.index)
-       //Ok(views.html.index("No Session"))
         Redirect(routes.Application.login)
       }    
   }
   
   def login = Action {
-           Ok(views.html.login(loginForm))
+       Ok(views.html.login(loginForm))
   }
   def logout =Action{implicit request => 
-    //Ok(views.html.index("Invalid Company")).withSession(session -"companyid")
-    Ok(views.html.login(loginForm)).withNewSession
+       Ok(views.html.login(loginForm)).withNewSession
   }
   
   def loginvalidate = Action{ implicit request =>
@@ -318,7 +315,6 @@ object Application extends Controller {
   			Errors => BadRequest(views.html.genconfig(Errors)),
   			genconfig => {
   			  var tempgenconfig: Genconfig = Genconfig.getConfig(compid)
-  			 // println( "Pool size is"+tempgenconfig.poolsize)
   			  if(tempgenconfig.poolsize == 0 && tempgenconfig.iterations == 0){
   			    Genconfig.setConfig(compid,genconfig)
   			  }else{
@@ -361,6 +357,23 @@ object Application extends Controller {
      Ok(views.html.genworking("Working"))
   }
   
+  def genpopulatereport = Action{implicit request => 
+    request.session.get("companyid").map{compid => 
+    var timediff = "";
+    var solpool :Solpool = Solpool(Nil) 
+    
+       var soln = Order.getMainSol
+       var primsol = Order.getPrimSoln
+      
+       
+       Genconfig.executeGenBackground(soln,primsol,compid)
+       Redirect(routes.Application.order)
+          
+    }.getOrElse{
+       Redirect(routes.Application.login)
+    }
+    
+  }
   
   //------------------ Form mappings -----------------------
   val loginForm = Form(
@@ -424,7 +437,9 @@ object Application extends Controller {
 		  mapping(
 				  "Pool Size" -> number,
 				  "Iterations" -> number,
-				  "Max order count" -> number
+				  "Max order count" -> number,
+				  "Workers" -> number,
+				  "Reports Path" -> text
 		  )(Genconfig.apply)(Genconfig.unapply)	
   )
     

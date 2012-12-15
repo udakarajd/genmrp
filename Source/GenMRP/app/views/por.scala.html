@@ -19,7 +19,7 @@
  
 
 
- 
+@if(!message.equals("Order failed")){ 
  <p>
  <table>
  <tr>
@@ -32,9 +32,13 @@
  	Clicking on 'Optimize' will start the genetic optimization. This will take some time depending on the pool size and the iterations you have specified in 'Genconfig' form. Higher the pool size and the Iterations will be, you will get more optimized solution at the end. 
  </td>
  </tr>
+ <tr>
+ <td><a href="@routes.Application.genpopulatereport" ><image src="@routes.Assets.at("images/report-icon.png")"/></a></td>
+ <td> Create Report</td>
+ </tr>
  </table>	 
  </p>
-
+}
 
 
 

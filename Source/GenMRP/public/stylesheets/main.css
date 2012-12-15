@@ -43,6 +43,22 @@ form#signin {
     box-shadow: 0 2px 5px rgba(0,0,0,.3);
     text-align: left;
 }
+form#genconfig {
+    width: 500px;
+    padding: 20px;
+    background: #F8F8FB;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.3);
+    text-align: left;
+}
+form#updateform{
+	width: 500px;
+    padding: 20px;
+    background: #F8F8FB;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.3);
+    text-align: left;	
+}
 
 table#login td { table-layout:fixed; width:400px; overflow:hidden; word-wrap:break-word; }
 table#home td { table-layout:fixed; overflow:hidden; word-wrap:break-word;text-align:center; }
