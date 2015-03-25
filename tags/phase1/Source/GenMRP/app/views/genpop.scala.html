@@ -1,0 +1,42 @@
+
+@(solpool:gen.Solpool, soltable: String, timestamp:String)
+
+@import helper._
+@import mrp.Soln
+@import gen.Solpool
+
+
+@main("Solution Pool"){
+
+  <h1>Optimized solution</h1>
+    <ul id="menu">
+		<li id="menu"><a id="mele" href="/">Home</a></li>
+		<li id="menu"><a id="mele" href="/part">Parts</a></li>
+		<li id="menu"><a id="mele" href="/order">Orders</a></li>
+		<li id="menu"><a id="mele" href="/genconf">GenConfig</a></li>
+		<li id="menu"><a id="mele" href="/logout">Logout</a></li>
+	</ul>
+	
+   <H2>Optimized Solution</H2>
+    
+    Time taken for the optimization -@timestamp 
+	<div>
+	@Html(soltable)
+	</div>
+
+  <table>
+  @solpool.sols.map{solx => 
+  			<tr>
+	       @solx.portlist.map{orderc =>
+			<td>@orderc.partid </td>
+			<td>@orderc.days </td>
+			<td>@orderc.quantity </td> 
+			}
+	       <td>@solx.fitness</td>
+	       
+	     
+	     	</tr>
+	     }
+
+   </table>
+}

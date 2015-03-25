@@ -1,0 +1,26 @@
+@(costfuncForm : Form[Costfunction])
+@import helper._
+
+@main("Update Cost functions"){
+	 <ul id="menu">
+		<li id="menu"><a id="mele" href="/">Home</a></li>
+		<li id="menu"><a id="mele" href="/part">Parts</a></li>
+		<li id="menu"><a id="mele" href="/order">Orders</a></li>
+		<li id="menu"><a id="mele" href="/genconf">GenConfig</a></li>
+		<li id="menu"><a id="mele" href="/logout">Logout</a></li>
+	</ul>
+	
+	<h2>Update cost function</h2>
+
+	@form(action = routes.Application.costfuncupdate,'id -> "updateform"){
+		
+		@inputText(costfuncForm("Company ID"))
+		@inputText(costfuncForm("Part ID"))
+		@inputText(costfuncForm("Function ID"),'size -> 10)
+		@inputText(costfuncForm("Function"),'size -> 40)
+		
+		<input type="submit" value="Update function"/>
+		
+	}
+	
+}

@@ -1,0 +1,88 @@
+@(parts:List[Part], partForm:Form[Part])
+@import helper._
+
+@main("Manage your Part or Materials") {
+    <ul id="menu">
+		<li id="menu"><a id="mele" href="/">Home</a></li>
+		<li id="menu"><a id="mele" href="/part">Parts</a></li>
+		<li id="menu"><a id="mele" href="/order">Orders</a></li>
+		<li id="menu"><a id="mele" href="/genconf">GenConfig</a></li>
+		<li id="menu"><a id="mele" href="/logout">Logout</a></li>
+	</ul>
+	
+    <h2> You are at Products and Parts page</h2> 
+    <p/>
+    <h3>Add new parts</h3>
+    
+    @form(action = routes.Application.partadd, 'id -> "genmrpform"){
+    <table>
+    <tr>
+    <td>@inputText(partForm("CompId")) 
+    </td>
+    <td>@inputText(partForm("PartId"))
+    </td>
+    <td>@inputText(partForm("Part name"))
+    </td>
+    <td>@inputText(partForm("Lead time"),'size -> 10)
+    </td>
+    <td>@inputText(partForm("On Hand"),'size -> 10)
+    </td>
+    </tr>
+    </table>
+        <input type="submit" value="Add Part">
+        <input type="reset" value ="Clear">
+    }
+    
+    <h3>Products and  parts</h3>
+    <table id="flowdata" border="1">
+    <tr>
+    	<th>Company</th>
+    	<th>Part Id</th>
+    	<th>Part Name</th>
+    	<th>Lead time(days)</th>
+    	<th>On hand </th>
+    	<th></th>
+    	<th></th>
+    	<th></th>
+    	<th></th>
+    	<th></th>
+    	
+    </tr>
+   
+    @parts.map{ part =>
+     <tr> 
+     <td>@part.compid</td>
+     <td>@part.partid </td>
+     <td>@part.partname</td>
+     <td>@part.leadtime</td>
+     <td>@part.onhand</td>
+     <td>@form(routes.Application.prepartupdate(part.partid)){
+    				<input type="submit" value="Update"/>
+    			}
+     </td>
+     <td>@form(routes.Application.partdelete(part.partid)){
+    				<input type="submit" value="Delete"/>
+    			}
+     </td>
+     <td>@form(routes.Application.bom(part.partid)){
+     			<input type="submit" value="Sub Parts"/>
+     	}
+     
+     </td>
+     <td>
+     	@form(routes.Application.costfunc(part.partid)){
+     		<input type="submit" value="Cost functions"/>
+        }
+     </td>
+     <td>
+     	@form(routes.Application.orderpart(part.partid)){
+     		<input type="submit" value="Order"/>
+     	}
+     </td>
+    </tr>
+    }
+    </table>
+    
+    
+    
+}

@@ -1,0 +1,66 @@
+@(orders : List[Order],orderform :Form[Order])
+@import helper._
+
+@main("Company orders"){
+	 <ul id="menu">
+		<li id="menu"><a id="mele" href="/">Home</a></li>
+		<li id="menu"><a id="mele" href="/part">Parts</a></li>
+		<li id="menu"><a id="mele" href="/order">Orders</a></li>
+		<li id="menu"><a id="mele" href="/genconf">GenConfig</a></li>
+		<li id="menu"><a id="mele" href="/logout">Logout</a></li>
+	</ul>
+
+	<h1>Company Orders</h1>
+	
+	@form(action = routes.Application.ordernew, 'id -> "genmrpform"){
+	<table>
+	<tr>
+		<td>@inputText(orderform("Company ID"))</td>
+		<td>@inputText(orderform("Part ID"))</td>
+		<td>@inputText(orderform("Order Id"),'size-> 10)</td>
+		<td>@inputText(orderform("Schedule ID"),'size -> 10)</td>
+		<td>@inputText(orderform("Days"),'size -> 8)</td>
+		<td>@inputText(orderform("Quantity"),'size -> 8)</td>
+	</tr>
+	</table>
+	<input type="submit" value="Order"/>
+	 <input type="reset" value ="Clear">	
+	}
+   
+   <table id="flowdata" border="1">
+   	<tr>
+   		<th>Company Id</th>
+   		<th>Part id</th>
+   		<th>Order id</th>
+   		<th>Schedule id</th>
+   		<th>Time Frame</th>
+   		<th>Quantity</th>
+   		<th>Delete</th>
+   		<th>Update</th>
+   	</tr>
+   @orders.map{order =>
+    <tr>
+    	<td>@order.compid</td>
+    	<td>@order.partid</td>
+    	<td>@order.orderid</td>
+    	<td>@order.scheduleid</td>
+    	<td>@order.days</td>
+    	<td>@order.quantity</td>
+    	<td align="center"><a href ="@routes.Application.orderremove(order.orderid)"><image src = "@routes.Assets.at("images/icontexto-message-types-error-purple16.png")"/></a></td>
+    	<td><a href="@routes.Application.perorderupdate(order.orderid)"><image src="@routes.Assets.at("images/update.jpg")"/></a></td>
+    </tr>
+    		
+   }
+   </table>
+   <table>
+   <tr>
+   <td><a href="@routes.Application.genpor"><image src="@routes.Assets.at("images/POR.jpg")" /></a></td>
+   <td width="400px"> Click on “Purchase order release” to generate the planned order release. This will give you the planned purchase order releases for the received orders above.<br/>
+ If the planned order releases are not feasible. The GenMRP will give you an error. This means that you cant fulfill the received orders in time.  </td>
+   </tr>
+   </table>
+   <br/>
+   
+   
+
+}

@@ -1,0 +1,45 @@
+@(message:String,orders:List[Order],por:List[Order])
+@import helper._
+
+@main("Planned order Release"){
+ <ul id="menu">
+		<li id="menu"><a id="mele" href="/">Home</a></li>
+		<li id="menu"><a id="mele" href="/part">Parts</a></li>
+		<li id="menu"><a id="mele" href="/order">Orders</a></li>
+		<li id="menu"><a id="mele" href="/genconf">GenConfig</a></li>
+		<li id="menu"><a id="mele" href="/logout">Logout</a></li>
+</ul>
+
+ <h1>Material requirment plan</h1>
+ 
+ <div>
+ 
+  @Html(message)
+ </div>
+ 
+
+
+@if(!message.equals("Order failed")){ 
+ <p>
+ <table>
+ <tr>
+ <td>
+ 	<a href="@routes.Application.genworking " target ="_blank">
+ 	<image src="@routes.Assets.at("images/Genpot2.jpg")" />
+ 	 </a>
+ </td>
+ <td width="400px">
+ 	Clicking on 'Optimize' will start the genetic optimization. This will take some time depending on the pool size and the iterations you have specified in 'Genconfig' form. Higher the pool size and the Iterations will be, you will get more optimized solution at the end. 
+ </td>
+ </tr>
+ <tr>
+ <td><a href="@routes.Application.genpopulatereport" ><image src="@routes.Assets.at("images/report-icon.png")"/></a></td>
+ <td> Create Report</td>
+ </tr>
+ </table>	 
+ </p>
+}
+
+
+
+}

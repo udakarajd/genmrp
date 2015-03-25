@@ -1,0 +1,42 @@
+@(loginForm:Form[LoginInfo])
+@import helper._
+
+@main("Log In") {
+    
+    <h1>GenMRP</h1>
+    <div>
+    <p>GenMRP gives a solution for Material Requirement Planning (MRP)with optimized lot sizing using Genetic Algorithms and parallel processing.</p>
+    </div>
+    <table id = "login">
+    <tr>
+    <td>
+    <p><a href ="http://genmrp.wordpress.com"> 
+    <image src="@routes.Assets.at("images/icontexto-message-types-info-purple.png")" align="middle"/></a> For more information</p>
+    <p> 
+    <image src="@routes.Assets.at("images/yellowapple.png")" align="middle"/> Try out your self documentation</p>
+    
+    <p> <a href="/signin">
+    <image src="@routes.Assets.at("images/xmas-20.png")" align="middle"/> </a> Sign in and Start using </p>
+    
+     </td>
+    <td>
+    
+      @form(action = routes.Application.loginvalidate,'id -> "login"){
+    	@inputText(loginForm("Company Id"))
+    	@inputPassword(loginForm("Password"))    	
+        
+      <input type="submit" value="Log In">
+    }
+    
+    
+    </td>
+    </tr>
+    </table>
+    
+    
+    
+    
+    
+  
+    
+}

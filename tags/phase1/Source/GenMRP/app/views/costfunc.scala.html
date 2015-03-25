@@ -1,0 +1,45 @@
+@(costfuncs : List[Costfunction], costfuncForm : Form[Costfunction])
+@import helper._
+
+@main("Part Cost functions"){
+	 <ul id="menu">
+		<li id="menu"><a id="mele" href="/">Home</a></li>
+		<li id="menu"><a id="mele" href="/part">Parts</a></li>
+		<li id="menu"><a id="mele" href="/order">Orders</a></li>
+		<li id="menu"><a id="mele" href="/genconf">GenConfig</a></li>
+		<li id="menu"><a id="mele" href="/logout">Logout</a></li>
+	</ul>
+	<h2>Cost functions of part</h2>
+	@form(action = routes.Application.costfuncadd,'id -> "genmrpform"){
+		<table>
+		<tr>
+		<td>@inputText(costfuncForm("Company ID"))</td>
+		<td>@inputText(costfuncForm("Part ID"))</td>
+		<td>@inputText(costfuncForm("Function ID"),'size -> 10)</td>
+		<td>@inputText(costfuncForm("Function"),'size -> 40)</td>
+		</tr>
+		</table>
+		<input type="submit" value="add function"/>
+		<input type="reset" value ="Clear"/>
+	}
+	<table id="flowdata" border="1">
+	<tr>
+		<th>Function Id</th>
+		<th>Function f(Q)</th>
+		<th>Delete</th>
+		<th>Update</th>
+	</tr>
+	@costfuncs.map{costfunc =>
+	<tr>
+		<td> @costfunc.funcid</td>
+		<td> @costfunc.functxt</td>
+		<td><a href ="@routes.Application.costfuncdelete(costfunc.partid,costfunc.funcid)"><image src = "@routes.Assets.at("images/icontexto-message-types-error-purple16.png")"/></a></td>
+		<td><a href ="@routes.Application.precostfuncupdate(costfunc.partid,costfunc.funcid)"> <image src="@routes.Assets.at("images/update.jpg")"/></a></td>
+	</tr>
+		
+		
+	}
+	</table>
+
+
+}

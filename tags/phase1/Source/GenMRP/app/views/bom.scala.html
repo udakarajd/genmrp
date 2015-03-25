@@ -1,0 +1,46 @@
+@(partid:String,boms:List[Bom],bomForm :Form[Bom])
+@import helper._
+
+@main("Bom sub parts"){
+
+	 <ul id="menu">
+		<li id="menu"><a id="mele" href="/">Home</a></li>
+		<li id="menu"><a id="mele" href="/part">Parts</a></li>
+		<li id="menu"><a id="mele" href="/order">Orders</a></li>
+		<li id="menu"><a id="mele" href="/genconf">GenConfig</a></li>
+		<li id="menu"><a id="mele" href="/logout">Logout</a></li>
+	</ul>
+	<h1> The Bill Of Materials (BOM) sub parts </h1>
+	<h2>Add sub part</h2>
+	@form(action = routes.Application.bomadd,'id -> "genmrpform"){
+		<table>
+		<tr>
+		<td>@inputText(bomForm("Company ID"))</td>
+		<td>@inputText(bomForm("Part ID"))</td>
+		<td>@inputText(bomForm("Child Part"))</td>
+		<td>@inputText(bomForm("Quantity"),'size -> 10)</td>
+		</tr>
+		</table>
+		<input type="submit" value="Add Child">
+		
+	}
+	<table id="flowdata" border="1">
+	<tr>
+	 <th>Child part Id</th>
+	 <th>Quantity</th>
+	 <th>Del</th>
+	</tr>
+	
+	@boms.map{bom =>
+		<tr>
+			<td>@bom.childpartid</td>
+			<td>@bom.quantity</td>
+			<td> <a href="@routes.Application.bomdelete(bom.partid,bom.childpartid)"><image src = "@routes.Assets.at("images/icontexto-message-types-error-purple16.png")"/></a>
+			</td>
+		</tr>
+	}
+	</table>
+	
+<a href="/">Home</a> <p>
+<a href="@routes.Application.part">Part</a>
+}
